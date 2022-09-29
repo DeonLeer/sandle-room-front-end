@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import './Login.css';
+import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 async function loginUser(credentials) {
  return fetch('http://localhost:8080/login', {
@@ -28,22 +29,16 @@ export default function Login({ setToken }) {
   }
 
   return(
-    <div className="login-wrapper">
-      <h1>Please Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)} />
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)} />
-        </label>
-        <div>
-          <button type="submit">Submit</button>
-        </div>
-      </form>
-    </div>
+    <Box sx={{width: '100vw', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <Paper elevation={6} sx={{width: '50%', height: '50%', padding: '30px'}}>
+        <Typography variant="h2">Please Log In</Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{paddingTop: '30px', height: '60%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
+          <TextField label="Email" variant="outlined" onChange={e => setUserName(e.target.value)} />
+          <TextField label="Password" variant="outlined" onChange={e => setPassword(e.target.value)} />
+          <Button variant='contained' sx={{color: 'black'}} type="submit">Submit</Button>
+        </Box>
+      </Paper>
+    </Box>
   )
 }
 
