@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import './App.css';
-import Login from '../Login/Login';
+import Login from './components/Login/Login';
 import Preferences from './components/Preferences';
 import Dashboard from './components/Dashboard';
+import useToken from './components/App/useToken';
+
 
 function App() {
-  const [token, setToken] = useState();
+
+  const { token, setToken } = useToken();
 
   if(!token) {
     return <Login setToken={setToken} />
@@ -17,14 +20,11 @@ function App() {
     <div className="wrapper">
       <h1>Application</h1>
       <BrowserRouter>
-        <Switch>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/preferences">
-            <Preferences />
-          </Route>
-        </Switch>
+        <Routes>
+          <Route path="/" element={<></>} />
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/preferences" element={<Preferences/>} />
+        </Routes>
       </BrowserRouter>
     </div>
   );
