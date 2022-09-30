@@ -22,7 +22,7 @@ const theme = createTheme({
 
 function App() {
 
-  const { token, setToken } = useToken();
+  const { token, deleteToken, setToken } = useToken();
 
   if(!token) {
     return (
@@ -41,12 +41,13 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg">
+      <Container maxWidth={false} disableGutters sx={{padding: '0', margin: '0'}}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard/>}/>
+            <Route path="/dashboard" element={<Dashboard logout={ deleteToken }/>}/>
             <Route path="/preferences" element={<Preferences/>} />
+            <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>
         </BrowserRouter>
       </Container>

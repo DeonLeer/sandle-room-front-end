@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import './Login.css';
 import { Box, Button, Paper, TextField, Typography } from '@mui/material';
 
 async function loginUser(credentials) {
