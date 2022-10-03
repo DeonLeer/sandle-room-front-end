@@ -19,15 +19,16 @@ export default function Router(props) {
                       { path: "", element: <Overview /> },
                       { path: "appointments", element: <Appointments /> },
                       {
-                          path: "requestapointment",
+                          path: "requestappointment",
                           element: <RequestAppointment />,
+                      },
+                      {
+                          path: "preferences",
+                          element: <Preferences />,
                       },
                   ],
               },
-              {
-                  path: "/preferences",
-                  element: <Preferences />,
-              },
+
               {
                   path: "*",
                   element: <Navigate to="/dashboard" />,

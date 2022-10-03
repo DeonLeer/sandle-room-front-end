@@ -39,17 +39,17 @@ const navConfig = [
     },
     {
         title: "preferences",
-        path: "/preferences",
+        path: "/dashboard/preferences",
         icon: getIcon("healthicons:ui-preferences"),
     },
     {
         title: "appointments",
-        path: "/appointments",
+        path: "/dashboard/appointments",
         icon: getIcon("teenyicons:appointments-outline"),
     },
     {
         title: "request appointment",
-        path: "/requestappointment",
+        path: "/dashboard/requestappointment",
         icon: getIcon("ic:baseline-schedule-send"),
     },
 ];

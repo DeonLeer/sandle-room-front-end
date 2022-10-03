@@ -169,7 +169,7 @@ export default function NavSection({ navConfig, ...other }) {
     const { pathname } = useLocation();
 
     const match = (path) =>
-        path ? !!matchPath({ path, end: false }, pathname) : false;
+        path ? !!matchPath({ path, end: true }, pathname) : false;
 
     return (
         <Box {...other}>

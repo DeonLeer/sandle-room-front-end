@@ -46,7 +46,6 @@ export default function AccountPopover(logout) {
     const anchorRef = useRef(null);
 
     const [open, setOpen] = useState(null);
-    console.log(logout);
     const handleOpen = (event) => {
         setOpen(event.currentTarget);
     };
