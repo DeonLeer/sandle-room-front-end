@@ -38,9 +38,9 @@ const navConfig = [
         icon: getIcon("eva:pie-chart-2-fill"),
     },
     {
-        title: "preferences",
-        path: "/dashboard/preferences",
-        icon: getIcon("healthicons:ui-preferences"),
+        title: "schedule",
+        path: "/dashboard/schedule",
+        icon: getIcon("ant-design:schedule-outlined"),
     },
     {
         title: "appointments",
@@ -51,6 +51,11 @@ const navConfig = [
         title: "request appointment",
         path: "/dashboard/requestappointment",
         icon: getIcon("ic:baseline-schedule-send"),
+    },
+    {
+        title: "preferences",
+        path: "/dashboard/preferences",
+        icon: getIcon("healthicons:ui-preferences"),
     },
 ];
 

@@ -8,6 +8,7 @@ import Overview from "./pages/Overview";
 import Appointments from "./pages/Appointments";
 import RequestAppointment from "./pages/RequestAppointment";
 import DashboardLayout from "./layouts/Dashboard";
+import Schedule from "./pages/Schedule";
 
 export default function Router(props) {
     const routes = props.token
@@ -17,15 +18,10 @@ export default function Router(props) {
                   element: <DashboardLayout logout={props.deleteToken} />,
                   children: [
                       { path: "", element: <Overview /> },
+                      { path: "schedule", element: <Schedule /> },
                       { path: "appointments", element: <Appointments /> },
-                      {
-                          path: "requestappointment",
-                          element: <RequestAppointment />,
-                      },
-                      {
-                          path: "preferences",
-                          element: <Preferences />,
-                      },
+                      { path: "requestappointment", element: <RequestAppointment />  },
+                      { path: "preferences", element: <Preferences /> },
                   ],
               },
 
