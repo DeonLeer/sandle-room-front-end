@@ -76,6 +76,17 @@ export default function SideBar({ isOpenSidebar, onCloseSidebar }) {
                 },
             }}
         >
+            <Box
+                sx={{
+                    px: 2.5,
+                    py: 3,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <img src="logo.png" />
+            </Box>
             <NavSection navConfig={navConfig} />
         </Scrollbar>
     );
