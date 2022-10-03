@@ -1,29 +1,28 @@
-import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 export default function useToken() {
-  const getToken = () => {
-    const tokenString = localStorage.getItem('token');
-    const userToken = JSON.parse(tokenString);
-    return userToken?.token
-  };
+    const getToken = () => {
+        const tokenString = localStorage.getItem("token");
+        const userToken = JSON.parse(tokenString);
+        return userToken?.token;
+    };
 
-  const [token, setToken] = useState(getToken());
+    const [token, setToken] = useState(getToken());
 
-  const saveToken = userToken => {
-    localStorage.setItem('token', JSON.stringify(userToken));
-    setToken(userToken.token);
-  };
+    const saveToken = (userToken) => {
+        localStorage.setItem("token", JSON.stringify(userToken));
+        setToken(userToken.token);
+    };
 
-  const deleteToken = () => {
-    localStorage.removeItem('token');
-    setToken(undefined);
-    window.location.replace('/');
-  }
+    const deleteToken = () => {
+        localStorage.removeItem("token");
+        setToken(undefined);
+    };
 
-  return {
-    setToken: saveToken,
-    deleteToken: deleteToken,
-    token
-  }
+    return {
+        setToken: saveToken,
+        deleteToken: deleteToken,
+        token,
+    };
 }
