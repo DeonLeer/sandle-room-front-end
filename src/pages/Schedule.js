@@ -1,5 +1,9 @@
+import { NavigateNext, NavigateBefore } from "@mui/icons-material";
 import {
     Box,
+    Button,
+    IconButton,
+    MenuItem,
     Paper,
     Table,
     TableBody,
@@ -7,127 +11,113 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
+    Typography,
 } from "@mui/material";
+import { setMonth } from "date-fns";
 import React, { useState } from "react";
-const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
+import Calendar from "../components/Calendar";
+import years from "../utils/years";
+
+const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
 ];
 
-function Calendar({ date }) {
-    const firstDay = new Date(`${date.getFullYear()}-${date.getMonth() + 1}-1`);
-    const offSet = days.indexOf(
-        firstDay.toLocaleDateString("en-US", { weekday: "long" })
-    );
-    const daysInMonth = new Date(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        0
-    ).getDate();
-    const rows = [];
-    let row = [];
-    let i = 0;
-    console.log(daysInMonth);
-    while (i < daysInMonth + offSet) {
-        console.log("here");
-        if (i < offSet) {
-            row.push(0);
-            console.log(row);
-            i++;
-        } else {
-            row.push(i + 1 - offSet);
-            if ((i + 1) % 7 === 0) {
-                rows.push(row);
-                row = [];
-                i++;
-            } else i++;
-        }
-    }
-    if (row.length) rows.push(row);
-
-
-    return (
-        <>
-        {rows.map((row) => (
-            <TableRow sx={{height: '10vh'}}>
-                {row.map((day, index) => (
-                    <TableCell key={index} align='center' >{day > 0 ? day : ''}</TableCell>
-                ))}
-            </TableRow>
-        ))}
-        </>
-    );
-}
-
-// const months = [
-//     "January",
-//     "February",
-//     "March",
-//     "April",
-//     "May",
-//     "June",
-//     "July",
-//     "August",
-//     "September",
-//     "October",
-//     "November",
-//     "December",
-// ];
+const yearList = years();
 
 export default function Schedule() {
-    const [date, setDate] = useState(new Date());
-    // const [year, setYear] = useState(today.getFullYear());
-    // const [month, setMonth] = useState(today.getMonth())
-    // const [monthLong, setMonthLong] = useState(
-    //     today.toLocaleDateString("en-US", { month: "long" })
-    // );
-    // const [date, setDate] = useState(today.getDate());
-    // const [firstDay, setFirstDay] = useState(
-    //     new Date(`${today.getFullYear()}-${today.getMonth() + 1}-1`)
-    // );
-    // const [offSet, setOffSet] = useState(
-    //     days.indexOf(firstDay.toLocaleDateString("en-US", { weekday: "long" }))
-    // );
+    const today = new Date();
 
-    // console.log(`
-    //     year: ${year}
-    //     month: ${month}
-    //     date: ${date}
-    //     firstDay: ${firstDay}
-    //     offSet: ${offSet}
-    //     days in month: ${daysInMonth(month+1, year)}
-    // `)
+    const [state, setState] = useState({
+        month: today.getMonth(),
+        year: today.getFullYear(),
+    });
+
 
     return (
         <Box sx={{ height: "100%", backgroundColor: "grey" }}>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: "100%" }} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            {days.map((day) => (
-                                <TableCell key={day} align="center">
-                                    {day}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {/* <TableRow>
-                            {days.map((day, index) => (
-                                <TableCell key={index} align="center">
-                                    {index < offSet ? "  " : index - offSet + 1}
-                                </TableCell>
-                            ))}
-                        </TableRow> */}
-                        {date && <Calendar date={date} />}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Box
+                sx={{
+                    display: "flex",
+                    width: "50%",
+                    justifyContent: 'space-around'
+                }}
+            >
+                <Box sx={{display: 'flex', justifyContent: 'space-around', width: '50%'}}>
+                    <IconButton onClick={(e) => {
+                        setState((prevState) => ({
+                            ...prevState,
+                            month: state.month ? state.month - 1 : 11,
+                            ...((!state.month && state.year > 1970) && {year: state.year - 1})
+                        }))
+                    }}>
+                        <NavigateBefore />
+                    </IconButton>
+                    <TextField
+                        select
+                        sx={{width: '75%'}}
+                        value={state.month}
+                        onChange={(e) => {
+                            setState((prevState) => ({
+                                ...prevState,
+                                month: e.target.value,
+                            }));
+                        }}
+                    >
+                        {months.map((month, index) => (
+                            <MenuItem key={index} value={index}>
+                                {month}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <IconButton onClick={(e) => {
+                        setState((prevState) => ({
+                            ...prevState,
+                            month: (state.month === 11) ? 0 : state.month + 1,
+                            ...((state.month === 11 && state.year < 2100) && {year: state.year + 1})
+                        }))
+                    }}>
+                        <NavigateNext />
+                    </IconButton>
+                </Box>
+                <Box sx={{display: 'flex', justifyContent: 'space-around', width: '50%'}}>
+                    <IconButton>
+                        <NavigateBefore />
+                    </IconButton>
+                    <TextField
+                        select
+                        value={state.year}
+                        onChange={(e) => {
+                            setState((prevState) => ({
+                                ...prevState,
+                                year: e.target.value,
+                            }));
+                        }}
+                    >
+                        {yearList.map((year) => (
+                            <MenuItem key={year} value={year}>
+                                {year}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <IconButton>
+                        <NavigateNext />
+                    </IconButton>                    
+                </Box>
+
+            </Box>
+            <Calendar month={state.month} year={state.year} />
         </Box>
     );
 }
