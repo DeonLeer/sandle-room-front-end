@@ -9,11 +9,10 @@ import { Box, useTheme } from "@mui/material";
 export default function DashboardLayout(props) {
     const [open, setOpen] = useState(false);
     const theme = useTheme();
-    const logout = props.logout;
 
     return (
         <Box sx={{ display: "flex", minHeight: "100%", overflow: "hidden" }}>
-            <NavBar logout={logout} onOpenSidebar={() => setOpen(true)} />
+            <NavBar onOpenSidebar={() => setOpen(true)} />
             <SideBar
                 isOpenSidebar={open}
                 onCloseSidebar={() => setOpen(false)}

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, createContext } from "react";
 import useToken from "./components/App/useToken";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Router from "./routes";
@@ -15,22 +14,21 @@ const theme = createTheme({
     backgroundImage: "url('background-image.jpg')",
 });
 
+export const UserContext = createContext();
+
 function App() {
-    
-    const auth = authService();
 
-    const user = auth.getCurrentUser();
+    const authServices = authService();
 
-    console.log(user)
+    const user = authServices.getCurrentUser();
 
-    const logout = auth.logout;
+    const logout = authServices.logout;
 
     return (
         <ThemeProvider theme={theme}>
-            <Router
-                user={user}
-                logout={logout}
-            />
+            <UserContext.Provider value={{ user: user, logout: logout }}>
+                <Router/>            
+            </UserContext.Provider>
         </ThemeProvider>
     );
 }

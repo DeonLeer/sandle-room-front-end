@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { UserContext } from "../../App";
 import PropTypes from "prop-types";
 // material
 import { alpha, styled } from "@mui/material/styles";
@@ -40,7 +42,8 @@ DashboardNavbar.propTypes = {
     logout: PropTypes.func,
 };
 
-export default function DashboardNavbar({ onOpenSidebar, logout }) {
+export default function DashboardNavbar({ onOpenSidebar }) {
+    const userContext = useContext(UserContext);
     return (
         <RootStyle>
             <ToolbarStyle>
@@ -64,7 +67,7 @@ export default function DashboardNavbar({ onOpenSidebar, logout }) {
                     spacing={{ xs: 0.5, sm: 1.5 }}
                 >
                     <NotificationsPopover />
-                    <AccountPopover logout={logout} />
+                    <AccountPopover logout={userContext.logout} />
                 </Stack>
             </ToolbarStyle>
         </RootStyle>
