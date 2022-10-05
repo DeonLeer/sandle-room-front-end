@@ -11,11 +11,15 @@ import DashboardLayout from "./layouts/Dashboard";
 import Schedule from "./pages/Schedule";
 
 export default function Router(props) {
-    const routes = props.token
+    const routes = props.user
         ? [
               {
+                  path: "/",
+                  element: <Home user={props.user} />,
+              },
+              {
                   path: "/dashboard",
-                  element: <DashboardLayout logout={props.deleteToken} />,
+                  element: <DashboardLayout logout={props.logout} />,
                   children: [
                       { path: "", element: <Overview /> },
                       { path: "schedule", element: <Schedule /> },
@@ -37,7 +41,7 @@ export default function Router(props) {
               },
               {
                   path: "/login",
-                  element: <Login setToken={props.setToken} />,
+                  element: <Login />,
               },
               {
                   path: "*",

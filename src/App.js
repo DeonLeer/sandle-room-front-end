@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 import useToken from "./components/App/useToken";
 import { createTheme, ThemeProvider } from "@mui/material";
 import Router from "./routes";
+import authService from "./services/auth.service";
 
 const theme = createTheme({
     palette: {
@@ -15,14 +16,20 @@ const theme = createTheme({
 });
 
 function App() {
-    const { token, deleteToken, setToken } = useToken();
+    
+    const auth = authService();
+
+    const user = auth.getCurrentUser();
+
+    console.log(user)
+
+    const logout = auth.logout;
 
     return (
         <ThemeProvider theme={theme}>
             <Router
-                token={token}
-                deleteToken={deleteToken}
-                setToken={setToken}
+                user={user}
+                logout={logout}
             />
         </ThemeProvider>
     );
