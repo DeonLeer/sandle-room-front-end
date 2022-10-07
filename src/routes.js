@@ -9,6 +9,7 @@ import { Children } from "react";
 import Overview from "./pages/Overview";
 import Appointments from "./pages/Appointments";
 import RequestAppointment from "./pages/RequestAppointment";
+import AppointmentRequests from "./pages/AppointmentRequests";
 import DashboardLayout from "./layouts/Dashboard";
 import Schedule from "./pages/Schedule";
 import { UserContext } from "./App";
@@ -16,19 +17,19 @@ import userService from "./services/user.service";
 
 export default function Router() {
 
-    const [admin, setAdmin] = useState(false)
+    // const [admin, setAdmin] = useState(false)
     
     const userContext = useContext(UserContext);
 
-    const userServices = userService();
+    // const userServices = userService();
     
-    useEffect(() => {
-        async function getIsAdmin() {
-            const data = await userServices.getAdminBoard();
-            data.data === "Admin Content." && setAdmin(true)
-        }
-        getIsAdmin()
-    }, [])
+    // useEffect(() => {
+    //     async function getIsAdmin() {
+    //         const data = await userServices.getAdminBoard();
+    //         data.data === "Admin Content." && setAdmin(true)
+    //     }
+    //     getIsAdmin()
+    // }, [])
 
     const routes = [
         {
@@ -45,10 +46,13 @@ export default function Router() {
                 { path: "", element: <Overview /> },
                 { path: "schedule", element: <Schedule /> },
                 { path: "appointments", element: <Appointments /> },
-                { path: "requestappointment", element: <RequestAppointment /> },
+                { path: "appointmentrequests", element: <AppointmentRequests /> },
                 { path: "preferences", element: <Preferences /> },
                 { path: "*", element: <Navigate to='/'/> }
             ],
+        },{
+            path: "*",
+            element: <Navigate to='/'/>
         })
     } else if (userContext.user && userContext.user.roles && userContext.user.roles.includes(1)) {
         routes.push({
@@ -62,6 +66,9 @@ export default function Router() {
                 { path: "preferences", element: <Preferences /> },
                 { path: "*", element: <Navigate to='/'/> }
             ],
+        },{
+            path: "*",
+            element: <Navigate to='/'/>
         })
     } else {
         routes.push({

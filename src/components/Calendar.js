@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 import {
     Paper,
     Table,
@@ -8,6 +8,10 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import { UserContext } from "../App";
+import appointmentService from '../services/appointment.service'
+import Day from "./Day";
+import useResponsive from "../hooks/useResponsive";
 
 const days = [
     "Sunday",
@@ -18,22 +22,7 @@ const days = [
     "Friday",
     "Saturday",
 ];
-const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-
-export default function Calendar({ month, year }) {
+const getRows = function (month, year) {
     const firstDay = new Date(`${year}-${month + 1}-1`);
     const offSet = days.indexOf(
         firstDay.toLocaleDateString("en-US", { weekday: "long" })
@@ -44,6 +33,7 @@ export default function Calendar({ month, year }) {
     let i = 0;
     while (i < daysInMonth + offSet) {
         if (i < offSet) {
+            
             row.push(0);
             i++;
         } else {
@@ -64,6 +54,47 @@ export default function Calendar({ month, year }) {
             j++;
         }
     }
+    return {rows, offSet}
+}
+export default function Calendar({ month, year }) {
+
+    const [appointments, setAppointments] = useState({})
+
+    const [expanded, setExpanded] = useState(false);
+
+    const userContext = useContext(UserContext);
+
+    const appointmentRoutes = appointmentService();
+
+    const isDesktop = useResponsive("up", "lg")
+
+    const isAdmin = userContext.user?.roles?.includes(2)
+
+    const getAppointmentCallback = isAdmin ? appointmentRoutes.getAdminAppointments : appointmentRoutes.getUserAppointments
+
+    const getAppointments = useCallback(async () => {
+        try {
+            const response = await getAppointmentCallback();
+            const appointmentsObject = {}
+            let day;
+            response.data.map((appointment) => {
+                day = Number(appointment.date.split('-')[2].split('T')[0])
+                appointmentsObject[day] ? appointmentsObject[day].push(appointment) : appointmentsObject[day] = [appointment]
+            })
+            setAppointments(appointmentsObject)
+        } catch (err) {
+            console.log(err)
+        }
+    })
+
+    useEffect(() => {
+        getAppointments();
+    }, [])
+
+
+
+    const {rows, offSet} = getRows(month, year)
+    
 
     return (
         <TableContainer component={Paper}>
@@ -76,7 +107,7 @@ export default function Calendar({ month, year }) {
                                 align="center"
                                 sx={{ width: "14.2857%" }}
                             >
-                                {day}
+                                {isDesktop ? day : day[0]}
                             </TableCell>
                         ))}
                     </TableRow>
@@ -90,18 +121,20 @@ export default function Calendar({ month, year }) {
                             {row.map((day, index) => (
                                 <TableCell
                                     key={day > 0 ? day : 0 - offSet + index}
-                                    align="center"
                                     sx={
                                         index
                                             ? {
-                                                  borderLeft:
-                                                      "1px solid rgba(224, 224, 224, 1)",
-                                                  width: "14.2857%",
+                                                borderLeft: "1px solid rgba(224, 224, 224, 1)",
+                                                width: "14.2857%",
+                                                padding: "8px",
+                                                height: '100%'
                                               }
-                                            : { width: "14.2857%" }
+                                            : { width: "14.2857%", padding: "8px", height: '100%'  }
                                     }
                                 >
-                                    {day > 0 ? day : ""}
+                                    {day > 0 ? 
+                                        <Day appointments={appointments} date={day} expanded={expanded} setExpanded={setExpanded} />
+                                    : ""}
                                 </TableCell>
                             ))}
                         </TableRow>

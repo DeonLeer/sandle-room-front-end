@@ -1,22 +1,13 @@
 import { NavigateNext, NavigateBefore } from "@mui/icons-material";
 import {
     Box,
-    Button,
     IconButton,
     MenuItem,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     TextField,
-    Typography,
 } from "@mui/material";
-import { setMonth } from "date-fns";
 import React, { useState } from "react";
 import Calendar from "../components/Calendar";
+import useResponsive from "../hooks/useResponsive";
 import years from "../utils/years";
 
 const months = [
@@ -44,14 +35,16 @@ export default function Schedule() {
         year: today.getFullYear(),
     });
 
+    const isDesktop = useResponsive("up", "lg")
 
     return (
         <Box sx={{ height: "100%", backgroundColor: "grey" }}>
             <Box
                 sx={{
                     display: "flex",
-                    width: "50%",
-                    justifyContent: 'space-around'
+                    width: isDesktop ? "50%" : "100%",
+                    justifyContent: 'space-around',
+                    paddingBottom: '10px'
                 }}
             >
                 <Box sx={{display: 'flex', justifyContent: 'space-around', width: '50%'}}>
