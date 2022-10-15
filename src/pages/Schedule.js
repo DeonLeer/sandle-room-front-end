@@ -8,22 +8,10 @@ import {
 import React, { useState } from "react";
 import Calendar from "../components/Calendar";
 import useResponsive from "../hooks/useResponsive";
+import monthList from "../utils/months";
 import years from "../utils/years";
 
-const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
+const months = monthList();
 
 const yearList = years();
 
