@@ -12,16 +12,9 @@ import { UserContext } from "../App";
 import appointmentService from '../services/appointment.service'
 import Day from "./Day";
 import useResponsive from "../hooks/useResponsive";
+import dayList from "../utils/days";
 
-const days = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-];
+const days = dayList();
 const getRows = function (month, year) {
     const firstDay = new Date(`${year}-${month + 1}-1`);
     const offSet = days.indexOf(
@@ -70,16 +63,19 @@ export default function Calendar({ month, year }) {
 
     const isAdmin = userContext.user?.roles?.includes(2)
 
-    const getAppointmentCallback = isAdmin ? appointmentRoutes.getAdminAppointments : appointmentRoutes.getUserAppointments
-
     const getAppointments = useCallback(async () => {
         try {
-            const response = await getAppointmentCallback();
+            const response = await appointmentRoutes.getAppointmentsByMonth(year, month+1);
             const appointmentsObject = {}
-            let day;
+            let date;
             response.data.map((appointment) => {
-                day = Number(appointment.date.split('-')[2].split('T')[0])
-                appointmentsObject[day] ? appointmentsObject[day].push(appointment) : appointmentsObject[day] = [appointment]
+                date = appointment.datetime.split('T')[0].split('-')[2]
+                appointment.date = date
+                if (appointmentsObject[date]) {
+                    appointmentsObject[date].push(appointment)
+                } else {
+                    appointmentsObject[date] = [appointment]
+                }
             })
             setAppointments(appointmentsObject)
         } catch (err) {
